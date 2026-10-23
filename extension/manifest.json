@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "WoW Recruit Scanner",
+  "version": "0.1.0",
+  "description": "Sends players from the WoWProgress 'looking for guild' list to your WoW Recruit Scanner site.",
+  "permissions": ["storage"],
+  "host_permissions": ["https://www.wowprogress.com/*", "https://wowsearch.viktortimewolf.com/*"],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    { "matches": ["https://www.wowprogress.com/gearscore*"], "js": ["content.js"], "run_at": "document_idle" }
+  ],
+  "options_page": "options.html"
+}
