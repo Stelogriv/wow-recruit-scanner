@@ -11,10 +11,10 @@ export type LfgCharacter = { region: Region; realm: string; name: string; profil
 
 const BASE = "https://www.wowprogress.com"
 
-/** The LFG list as the site itself links it: /gearscore/<region>?lfg=1 (confirmed by Viktor). */
+/** The LFG list as the site itself links it: /gearscore/<region>?lfg=1&sortby=ts, newest first (confirmed by Viktor). */
 export function lfgListUrl(region: Region | null): string {
   const r = region ? `/${region}` : ""
-  return `${BASE}/gearscore${r}?lfg=1`
+  return `${BASE}/gearscore${r}?lfg=1&sortby=ts`
 }
 
 const CHAR_LINK = /href="\/character\/(eu|us|kr|tw)\/([^/"]+)\/([^/"?#]+)"/g

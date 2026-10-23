@@ -21,8 +21,8 @@ describe("WoWProgress LFG parser", () => {
     expect(parseLfgList("<html>Just a moment...</html>")).toEqual([])
   })
   it("builds region-scoped and global list URLs", () => {
-    expect(lfgListUrl("eu")).toBe("https://www.wowprogress.com/gearscore/eu?lfg=1")
-    expect(lfgListUrl(null)).toBe("https://www.wowprogress.com/gearscore?lfg=1")
+    expect(lfgListUrl("eu")).toBe("https://www.wowprogress.com/gearscore/eu?lfg=1&sortby=ts")
+    expect(lfgListUrl(null)).toBe("https://www.wowprogress.com/gearscore?lfg=1&sortby=ts")
   })
 })
 
