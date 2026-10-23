@@ -66,5 +66,8 @@ export async function fetchWcl(region: string, realm: string, name: string) {
     cache: "no-store",
   })
   const j = (await res.json()) as { data?: { characterData?: { character?: Partial<Record<DiffLetter, ZoneRankings>> | null } }; errors?: unknown }
-  return { status: res.status, scores: mapWcl(j.data?.characterData?.character ?? null), errors: j.errors ?? null }
+  const character = j.data?.characterData?.character ?? null
+  // raw: what WCL actually returned for Mythic, so an all-dash row can be told apart from a wrong zone.
+  const raw = character ? JSON.stringify(character.M ?? null).slice(0, 600) : null
+  return { status: res.status, found: character !== null, scores: mapWcl(character), errors: j.errors ?? null, raw }
 }
