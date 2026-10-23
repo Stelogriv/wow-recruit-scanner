@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic"
 
 /**
  * Step 1 proof: can Vercel read all three sources? Locked behind PROBE_KEY so it is not a
- * public proxy into those sites. GET /api/probe?key=...&region=eu
+ * public proxy into those sites. GET /api/probe?key=...&region=eu[&char=eu/realm/name]
  */
 export async function GET(req: Request) {
   const url = new URL(req.url)
@@ -33,8 +33,14 @@ export async function GET(req: Request) {
       // Zero rows means either a block page or a layout the parser does not know — show it.
       sample: players.length === 0 ? page.body.slice(0, 1500) : undefined,
     }
+    // ?char=eu/realm/name tests Raider.IO and Warcraft Logs on its own, even when the list is blocked.
+    const charParam = url.searchParams.get("char")?.split("/")
+    const targets =
+      charParam?.length === 3
+        ? [{ region: charParam[0], realm: charParam[1], name: charParam[2] }]
+        : players.slice(0, 3)
     const enriched = []
-    for (const p of players.slice(0, 3)) {
+    for (const p of targets) {
       const rio = await fetchRio(p.region, p.realm, p.name).catch((e: Error) => ({ error: e.message }))
       const wcl = await fetchWcl(p.region, p.realm, p.name)
         .then((w) => ({ ...w, display: w.scores ? formatWcl(w.scores) : null }))
